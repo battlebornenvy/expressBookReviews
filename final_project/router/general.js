@@ -44,14 +44,25 @@ public_users.get('/author/:author',function (req, res) {
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-    const title = req.params.title;
-    res.send(books[title]);
-});
+    let bookList = []
+    for(const [key, values] of Object.entries(books)){
+        const book = Object.entries(values);
+        for(let i = 0; i < book.length ; i++){
+            if(book[i][0] == 'title' && book[i][1] == req.params.title){
+              bookList.push(books[key]);
+            }
+        }
+    }
+    if(bookList.length == 0){
+        return res.status(300).json({message: "Author not found"});
+    }
+    res.send(bookList);
+  });
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
     const isbn = req.params.isbn;
-    res.send(books[isbn]);
+    res.send(books[isbn].reviews);
 });
 
 module.exports.general = public_users;
