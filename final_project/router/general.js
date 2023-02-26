@@ -90,8 +90,7 @@ function getAllBooks() {
       setTimeout(() => {
         resolve(books);
       }, 3000);
-  
-      return;
+        return;
     });
   }
   
