@@ -5,13 +5,30 @@ let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
 // Register new users
-public_users.post("/register",function (req,res) {
-    if (req.body.userName){
-        public_users[req.body.userName] = {
-            "password":req.body.password            
-            }
+const doesExist = (username)=>{
+    let usersamename = users.filter((user)=>{
+      return user.username === username
+    });
+    if(usersamename.length > 0){
+      return true;
+    } else {
+      return false;
     }
-res.send("The user" + (' ')+ (req.body.userName) + " Has been added!");
+  }
+
+public_users.post("/register", (req,res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  if (username && password) {
+    if (!doesExist(username)) { 
+      users.push({"username":username,"password":password});
+      return res.status(200).json({message: "User " +username+ " successfully registred. Now you can login"});
+    } else {
+      return res.status(404).json({message: "User" +username+ " already exists!"});    
+    }
+  } 
+  return res.status(404).json({message: "Unable to register user."});
 });
 
 // Get the book list available in the shop
