@@ -82,4 +82,63 @@ public_users.get('/review/:isbn',function (req, res) {
     res.send(books[isbn].reviews);
 });
 
+// Using Promise callbacks or Async-Await
+// Task 10
+
+function getAllBooks() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(books);
+      }, 3000);
+  
+      return;
+    });
+  }
+  
+  // Task 11
+  
+  function getBookByISBN(isbn) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const book = books[isbn];
+        if (!book) {
+          reject("Book not found");
+        }
+        resolve(book);
+      }, 3000);
+    });
+  }
+  
+  // Task 12
+  function getBookByAuthor(author) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const booksByAuthor = [];
+        for (const key in books) {
+          if (books[key].author === author) {
+            booksByAuthor.push(books[key]);
+          }
+        }
+        if (booksByAuthor.length === 0) {
+          reject("Book not found");
+        }
+        resolve(booksByAuthor);
+      }, 3000);
+    });
+  }
+  
+// Task 13
+function getBookByTitle(title) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        for (const key in books) {
+          if (books[key].title === title) {
+            resolve(books[key]);
+          }
+        }
+        reject("Book not found");
+      }, 3000);
+    });
+  }
+
 module.exports.general = public_users;
